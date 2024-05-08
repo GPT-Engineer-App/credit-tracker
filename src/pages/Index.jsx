@@ -19,7 +19,18 @@ const Index = () => {
       });
       return;
     }
-    setExpenses([...expenses, { email, amount: parseFloat(amount) }]);
+    const existingExpenseIndex = expenses.findIndex((exp) => exp.email === email);
+    if (existingExpenseIndex !== -1) {
+      const updatedExpenses = expenses.map((exp, index) => {
+        if (index === existingExpenseIndex) {
+          return { ...exp, amount: exp.amount + parseFloat(amount) };
+        }
+        return exp;
+      });
+      setExpenses(updatedExpenses);
+    } else {
+      setExpenses([...expenses, { email, amount: parseFloat(amount) }]);
+    }
     setEmail("");
     setAmount("");
   };
